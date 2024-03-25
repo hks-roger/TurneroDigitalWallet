@@ -7,3 +7,5 @@ Hedy presentation:<https://docs.google.com/presentation/d/1PaZ6AIQLWWOez4bhokahC
 Figma for our project: <https://www.figma.com/file/XsCEB6hI3LkSAWeL7EjIGH/Untitled?type=design&node-id=0-1&mode=design&t=ztDY3qjBsmpoybjQ-0>
 
 Github repo: <https://github.com/DanielUndefined/TurneroDigitalWallet/tree/development>
+
+Firebase APP: <https://console.firebase.google.com/project/web3-crypturn-4b348/overview>
