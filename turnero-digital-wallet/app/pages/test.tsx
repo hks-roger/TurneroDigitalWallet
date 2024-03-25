@@ -5,8 +5,13 @@ import { Box } from "@chakra-ui/react";
 import { collection, addDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../firebaseConfig";
+import { useMetaMask } from "metamask-react";
 
-async function addDataToFirestore(name, email, message) {
+async function addDataToFirestore(
+  name: string,
+  email: string,
+  message: string
+) {
   try {
     const docRef = await addDoc(collection(db, "messages"), {
       name: name,
@@ -25,8 +30,9 @@ const Test = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const { status, connect, account, chainId, ethereum } = useMetaMask();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const added = await addDataToFirestore(name, email, message);
     if (added) {
@@ -42,7 +48,7 @@ const Test = () => {
     <Box>
       <h1>Add data to firestore database</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <Box>
           <label htmlFor="name">Name:</label>
           <input
             type="text"
@@ -50,25 +56,40 @@ const Test = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <label htmlFor="email">email:</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="text"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label htmlFor="message">message:</label>
+          <label htmlFor="message">Message:</label>
           <input
             type="text"
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-        </div>
+        </Box>
         <div>
           <button type="submit">Submit</button>
         </div>
       </form>
+      <Box>
+        {status === "initializing" && (
+          <div>Synchronisation with MetaMask ongoing...</div>
+        )}
+        {status === "unavailable" && <div>MetaMask not available :(</div>}
+        {status === "notConnected" && (
+          <button onClick={connect}>Connect to MetaMask</button>
+        )}
+        {status === "connecting" && <div>Connecting...</div>}
+        {status === "connected" && (
+          <div>
+            Connected account {account} on chain ID {chainId}
+          </div>
+        )}
+      </Box>
     </Box>
   );
 };
